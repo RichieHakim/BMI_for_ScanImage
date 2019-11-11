@@ -1,15 +1,17 @@
 function teensyOutput = program_simpleBMI(vals,varargin)
 persistent  runningVals runningVals_smooth length_runningVals runningRewards length_runningRewards runningThresholdState runningCursor runningBaselineState
+% global baselineStuff
 
 % ROI vars
 frameRate = 30;
 duration_plotting = 30 * frameRate; % ADJUSTABLE: change number value (in seconds)
 win_smooth = 3; % smoothing window (in frames)
 F_baseline_prctile = 20; % percentile to define as F_baseline of cells
-scale_factors = [6.5930 7.8404 5.4939 4.6421];
+scale_factors = [6.93088166200986,5.85766320834125,4.90333714230996,7.79732599546290];
+% scale_factors = baselineStuff.scale_factors;
 ensemble_assignments = [1 1 2 2];
 
-duration_trial = 30*60*60; % in frames
+duration_trial = 30*60*3; % in frames
 
 minBaselineHold = 3*frameRate;
 fractionOfTimeAtBaselineDuringHold = 0.5;
@@ -17,15 +19,16 @@ baselineCursorThreshold = 0.15; % fraction of 'threshold_value' that cursor has 
 
 % reward vars
 minRewardInterval = 5 * frameRate;
-threshold_value = .5;
+threshold_value =   2.45;
 threshold_duration = 1; % number of frames threshold must be crossed to enter reward state
 
-range_cursorSound = [-2 2.4];
+range_cursorSound = [-threshold_value threshold_value];
 range_freqOutput = [1000 20000]; % this is set in the teensy code (Ofer made it)
 
 % %%
 % resetRunningRewards % YOU MUST COMMENT THIS OUT IN ORDER TO ACCUMULATE REWARDS
-% saveParams('F:\RH_Local\Rich data\scanimage data\20191107\mouse 10.13B\params.mat')
+% saveParams('F:\RH_Local\Rich data\scanimage data\20191110\mouse 10.13A\expParams.mat')
+% saveParams(baselineStuff.directory)
 
 
 %%
@@ -97,7 +100,7 @@ end
 if numel(runningBaselineState) > minBaselineHold
     runningBaselineState(1:end-minBaselineHold) = [];
 end
-
+% 1
 if rewardState == 1
     giveReward(50) % in ms
 end
@@ -128,21 +131,21 @@ end
     end
 
     function saveParams(directory)
-        params.frameRate = frameRate;
-        params.length_History = length_History;
-        params.win_smooth = win_smooth;
-        params.F_baseline_prctile = F_baseline_prctile;
-        params.scale_factors = scale_factors;
-        params.ensemble_assignments = ensemble_assignments;
-        params.minBaselineHold = minBaselineHold;
-        params.fractionOfTimeAtBaselineDuringHold = fractionOfTimeAtBaselineDuringHold;
-        params.baselineCursorThreshold = baselineCursorThreshold;
-        params.minRewardInterval = minRewardInterval;
-        params.threshold_value = threshold_value;
-        params.threshold_duration = threshold_duration;
-        params.range_cursorSound = range_cursorSound;
-        params.range_freqOutput = range_freqOutput;
+        expParams.frameRate = frameRate;
+        expParams.length_History = duration_trial;
+        expParams.win_smooth = win_smooth;
+        expParams.F_baseline_prctile = F_baseline_prctile;
+        expParams.scale_factors = scale_factors;
+        expParams.ensemble_assignments = ensemble_assignments;
+        expParams.minBaselineHold = minBaselineHold;
+        expParams.fractionOfTimeAtBaselineDuringHold = fractionOfTimeAtBaselineDuringHold;
+        expParams.baselineCursorThreshold = baselineCursorThreshold;
+        expParams.minRewardInterval = minRewardInterval;
+        expParams.threshold_value = threshold_value;
+        expParams.threshold_duration = threshold_duration;
+        expParams.range_cursorSound = range_cursorSound;
+        expParams.range_freqOutput = range_freqOutput;
         
-        save(directory, 'params')
+        save(directory, 'expParams')
     end
 end

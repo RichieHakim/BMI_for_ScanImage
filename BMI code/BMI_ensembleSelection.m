@@ -2,8 +2,8 @@
 % function best_decoder_value = BMI_ensembleSelection(directory)
 %% import baseline movie
 tic
-movie = bigread4('F:\RH_Local\Rich data\scanimage data\20191107\mouse 10.13B\baseline_00001.tif');
-% movie = bigread2('F:\RH_Local\Rich data\scanimage data\20191107\mouse 10.13B\baseline_00001.tif',1,500);
+% movie = bigread4('F:\RH_Local\Rich data\scanimage data\20191109\mouse 10.13A\baseline_00003.tif');
+movie = bigread2('F:\RH_Local\Rich data\scanimage data\baseline_00002.tif',1,500);
 % movie = bigread4(directory);
 toc
 %%
@@ -24,8 +24,14 @@ for ii = 1:chunk_size:size(movie,2)
     end
 end
 toc
-movie_mean = mean(movie,3);
 %%
+movie_mean = mean(movie,3);
+
+h1 = figure;
+imagesc(movie_mean)
+set(gca,'CLim',[0 1e4])
+
+
 h1 = figure;
 ax1 = subplot(7,1,1:3);
 imagesc(movie_mean)
@@ -71,10 +77,10 @@ while pref_addROI == 1
     patch(ROI_patchX, ROI_patchY,cmap(cc,:),'EdgeColor',cmap(cc,:),'FaceColor','none','LineWidth',2);
     
     ax2 = subplot(7,1,4:5); hold on
-    plot(F_roi(:,cc),'Color',cmap(cc,:))
+    plot((1:size(movie,3)) / Fs_frameRate, F_roi(:,cc),'Color',cmap(cc,:))
     
     ax3 = subplot(7,1,6:7); hold on
-    plot(dFoF_roi(:,cc),'Color',cmap(cc,:))
+    plot((1:size(movie,3)) / Fs_frameRate,dFoF_roi(:,cc),'Color',cmap(cc,:))
     
     clear figLegend
     for ii = 1:numTraces
@@ -145,7 +151,7 @@ threshold_search_space = 0: 0.01 : max(cursor);
 clear thresh_crossings TC_prob thresh_crossings_inverse TC_inverse_prob
 for ii = 1:numel(threshold_search_space)
     thresh_crossings(:,ii) = cursor > threshold_search_space(ii);
-    thresh_crossings_inverse(:,ii) = -cursor > threshold_search_space(ii);
+%     thresh_crossings_inverse(:,ii) = -cursor > threshold_search_space(ii);
     for jj = 1:size(cursor,1)
         if thresh_crossings(jj,ii)==1 && jj > 30*(baselineHoldTime+1) && jj > 30*(minRewardInterval+1)
             if mean(cursor(jj-30*baselineHoldTime:jj) < baselineThreshold * threshold_search_space(ii)) < baselineHoldFraction
@@ -157,23 +163,23 @@ for ii = 1:numel(threshold_search_space)
             
         end
         
-        if thresh_crossings_inverse(jj,ii)==1 && jj > 30*6
-            if mean(cursor(jj-30*5:jj) < 0.1 * threshold_search_space(ii)) < 0.5
-                thresh_crossings_inverse(jj,ii) = 0;
-            end
-            if sum(cursor(jj-30*5:jj) > threshold_search_space(ii)) > 1
-                thresh_crossings_inverse(jj,ii) = 0;
-            end
-            
-        end
+%         if thresh_crossings_inverse(jj,ii)==1 && jj > 30*6
+%             if mean(cursor(jj-30*5:jj) < 0.1 * threshold_search_space(ii)) < 0.5
+%                 thresh_crossings_inverse(jj,ii) = 0;
+%             end
+%             if sum(cursor(jj-30*5:jj) > threshold_search_space(ii)) > 1
+%                 thresh_crossings_inverse(jj,ii) = 0;
+%             end
+%             
+%         end
     end
 end
 axis_time = (1:numel(cursor)) / (Fs_frameRate);
-figure; imagesc(threshold_search_space, axis_time, thresh_crossings)
+% figure; imagesc(threshold_search_space, axis_time, thresh_crossings)
 rewards_total = sum(thresh_crossings);
-figure; plot(threshold_search_space,rewards_total)
+% figure; plot(threshold_search_space,rewards_total)
 
-step_size = size(thresh_crossings,1)/trialsInTrace;
+step_size = round(size(thresh_crossings,1)/trialsInTrace);
 clear thresh_crossings_chopped trialHitRate
 
 for jj = 1:size(thresh_crossings,2)
