@@ -13,6 +13,13 @@ Optional (currently configured for, but totally not necessary):
 - WaveSurfer for collecting behavioral data (licking, accelerometer, frame triggers, etc.)
 - On your computer: A decent CPU, SSD, 32+GB of RAM. Used for the baseline calculations and simulations for determining the threshold to use.
 
+How to use:
+- Put all the files in Matlab's path
+- Use the integration manager to make some ROIs
+- Put the BMI_trial function in the output function of the Integration window
+- Set experiment parameters in the BMI_trial function
+- That's it! There are some extra functions here that allow for increased functionality, but the above is all that's required to get started.
+
 I built this system to be modular and readable, so it should be a good base for people starting from scratch. That said it isn't perfect, and here are some imperfections:
 - The feedback code is pretty quick but could be quicker; I get feedback within 40ms of a frame.
 - It currently uses ScanImage's 'integration' feature to get ROI values, which makes life easy, but also results in slow-downs if you increase your resolution too much. I am currently doing 1024 x 512 with no issues.
