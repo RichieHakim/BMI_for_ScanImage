@@ -22,4 +22,4 @@ I built this system to be modular and readable, so it should be a good base for 
 
 What I would love some help with:
 - If someone wants to help implement Suite 2p or CNMF or something to do a better job at ROI finding, that would be amazing. It's just a bit far down on my to do this right now, and manual ROI selection over a fano-factor image has worked fine.
-- Implementing a running/rolling percentile calculation. This is the slowest step in the feedback (and simulation). It is used to calculation the dF/F at any given time point based on the last minute or so of data. I think there is a nice solution using heap structures in Matlab, I just haven't dug into it yet.
+- Implementing a running/rolling percentile calculation. This is the slowest step in the feedback (and simulation). It is used to calculate the dF/F at any given time point based on the last minute or so of data. I think there is a nice solution using heap structures in Matlab, I just haven't dug into it yet.
