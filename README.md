@@ -7,7 +7,7 @@ Requirements:
 - A microscope running a version of ScanImage that includes ROI integration
 - A NI-DAQ system with some free inputs and outputs
 
-Optional (currently configured for):
+Optional (currently configured for, but totally not necessary):
 - A Teensy/Arduino used for real-time auditory feedback
 - Some LEDs hooked up to an LED driver
 - WaveSurfer for collecting behavioral data (licking, accelerometer, frame triggers, etc.)
