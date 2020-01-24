@@ -1,4 +1,5 @@
-# BMI_for_ScanImage
+# BWAIN: BMI Without An Interesting Name
+A Brain-Machine Interfacing system for ScanImage
 Some simple code to run optical Brain Machine Interfacing experiments through ScanImage and Matlab.
 Email me if you'd like to learn how to use it. I'm happy to help: RHakim@g.harvard.edu
 
